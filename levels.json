@@ -1,0 +1,17 @@
+[
+  { "niveau": 0, "xp": 50, "debloque": [] },
+  {
+    "niveau": 1,
+    "xp": 150,
+    "debloque": ["Four", "Ble", "Moulin", "Farine", "Pain"]
+  },
+  { "niveau": 2, "xp": 150, "debloque": ["Vache", "Lait"] },
+  { "niveau": 3, "xp": 150, "debloque": ["Moutton", "Veste"] },
+  { "niveau": 4, "xp": 150, "debloque": ["Salade", "Sandwich"] },
+  { "niveau": 5, "xp": 150, "debloque": ["Cerises"] },
+  { "niveau": 6, "xp": 150, "debloque": ["Poule", "Oeuf", "Gateau"] },
+  { "niveau": 7, "xp": 150, "debloque": ["Oranges"] },
+  { "niveau": 8, "xp": 150, "debloque": ["Chevre", "Fromage"] },
+  { "niveau": 9, "xp": 150, "debloque": ["Fraises"] },
+  { "niveau": 10, "xp": 150, "debloque": ["Abeille", "Miel"] }
+]

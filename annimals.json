@@ -1,0 +1,37 @@
+[
+    {
+        "nom": "Vache",
+        "temps": 30,
+        "prix": 70,
+        "quantite": 1,
+        "ressource": "Lait"
+    },
+    {
+        "nom": "Moutton",
+        "temps": 60,
+        "prix": 120,
+        "quantite": 1,
+        "ressource": "Laine"
+    },
+    {
+        "nom": "Poule",
+        "temps": 60,
+        "prix": 150,
+        "quantite": 1,
+        "ressource": "Oeuf"
+    },
+    {
+        "nom": "Chevre",
+        "temps": 100,
+        "prix": 200,
+        "quantite": 1,
+        "ressource": "Fromage"
+    },
+    {
+        "nom": "Abeille",
+        "temps": 200,
+        "prix": 250,
+        "quantite": 3,
+        "ressource": "Miel"
+    }
+]

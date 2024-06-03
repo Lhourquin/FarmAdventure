@@ -3,82 +3,17 @@ const readline = require('readline').createInterface({
     output: process.stdout
 });
 
-const ressources = [
-    { nom: "Eaux", temps: 10, prix: 0, quantite: 1}
-]
+const ressources = require('./ressources.json');
 
-const cultures = [
-    { nom: "Carrotes", temps: 3, prix: 10, quantite: 5},
-    { nom: "Tomates", temps: 5, prix: 15, quantite: 5},
-    { nom: "Patates", temps: 7, prix: 20, quantite: 5},
-    { nom: "Salade", temps: 7, prix: 25, quantite: 5},
-    { nom: "Cerises", temps: 7, prix: 30, quantite: 5},
-    { nom: "Oranges", temps: 7, prix: 20, quantite: 5},
-    { nom: "Fraises", temps: 7, prix: 20, quantite: 5},
-    { nom: "Ble", temps: 7, prix: 20, quantite: 5},
-];
+const cultures = require('./cultures.json');
 
-const animaux = [
-    { nom: "Vache", temps: 30, prix: 70, quantite: 1, ressource: "Lait"},
-    { nom: "Moutton", temps: 60, prix: 120, quantite: 1, ressource: "Laine"},
-    { nom: "Poule", temps: 60, prix: 150, quantite: 1, ressource: "Oeuf"},
-    { nom: "Chevre", temps: 100, prix: 200, quantite: 1, ressource: "Fromage"},
-    { nom: "Abeille", temps: 200, prix: 250, quantite: 3, ressource: "Miel"},
-]
+const animaux = require('./annimals.json');
 
-const machines = [
-    { nom: "Four", temps: 30, prix: 150, quantite: 1, ressource: ["Pain", "Gateau"]},
-    { nom: "Moulin", temps: 30, prix: 200, quantite: 1, ressource: ["Ble"]}
-]
+const machines = require('./machines.json');
 
-const niveaux = [
-    { niveau: 0, xp: 50, debloque: []},
-    { niveau: 1, xp: 150, debloque: ["Four", "Ble", "Moulin", "Farine", "Pain"]},
-    { niveau: 2, xp: 150, debloque: ["Vache", "Lait"]},
-    { niveau: 3, xp: 150, debloque: ["Moutton", "Veste"]},
-    { niveau: 4, xp: 150, debloque: ["Salade", "Sandwich"]},
-    { niveau: 5, xp: 150, debloque: ["Cerises"]},
-    { niveau: 6, xp: 150, debloque: ["Poule", "Oeuf", "Gateau"]},
-    { niveau: 7, xp: 150, debloque: ["Oranges"]},
-    { niveau: 8, xp: 150, debloque: ["Chevre", "Fromage"]},
-    { niveau: 9, xp: 150, debloque: ["Fraises"]},
-    { niveau: 10, xp: 150, debloque: ["Abeille", "Miel"]},
-]
+const niveaux = require('./levels.json');
 
-let joueur = {
-    niveau: 0,
-    xp: 0,
-    terres: 1,
-    terrains: 1,
-    piecesOr: 15,
-    ressources: [
-        { nom: "Eau", quantite: 10, debloque: true }
-    ],
-    animaux: [
-        { nom: "Vache", quantite: 0, debloque: false },
-        { nom: "Moutton", quantite: 0, debloque: false },
-        { nom: "Poule", quantite: 0, debloque: false },
-        { nom: "Chevre", quantite: 0, debloque: false },
-        { nom: "Abeille", quantite: 0, debloque: false }
-    ],
-    cultures: [
-        { nom: "Carrotes", quantite: 5, debloque: true },
-        { nom: "Tomates", quantite: 5, debloque: true },
-        { nom: "Patates", quantite: 5, debloque: true },
-        { nom: "Salade", quantite: 0, debloque: false },
-        { nom: "Cerises", quantite: 0, debloque: false },
-        { nom: "Oranges", quantite: 0, debloque: false },
-        { nom: "Fraises", quantite: 0, debloque: false },
-        { nom: "Ble", quantite: 0, debloque: false }
-    ],
-    machines: [
-        { nom: "Four", quantite: 0, debloque: false },
-        { nom: "Moulin", quantite: 0, debloque: false }
-    ],
-    ressourcesEnCours: [
-        { nom: "model", quantite: 10, temps: 100 }
-    ]
-}
+const joueur = require('./player.json');
 
 // ** Commencer à jouer **
 function jouer() {
@@ -99,6 +34,10 @@ function jouer() {
             case "Vendre":
                 vendre();
                 break;
+            default:
+                console.log('Action invalide');
+                jouer();
+            
         }
     })
 }

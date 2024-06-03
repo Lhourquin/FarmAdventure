@@ -1,0 +1,16 @@
+[
+  {
+    "nom": "Four",
+    "temps": 30,
+    "prix": 150,
+    "quantite": 1,
+    "ressource": ["Pain", "Gateau"]
+  },
+  {
+    "nom": "Moulin",
+    "temps": 30,
+    "prix": 200,
+    "quantite": 1,
+    "ressource": ["Ble"]
+  }
+]

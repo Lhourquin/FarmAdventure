@@ -1,0 +1,50 @@
+[
+    {
+        "nom": "Carrotes",
+        "temps": 3,
+        "prix": 10,
+        "quantite": 5
+    },
+    {
+        "nom": "Tomates",
+        "temps": 5,
+        "prix": 15,
+        "quantite": 5
+    },
+    {
+        "nom": "Patates",
+        "temps": 7,
+        "prix": 20,
+        "quantite": 5
+    },
+    {
+        "nom": "Salade",
+        "temps": 7,
+        "prix": 25,
+        "quantite": 5
+    },
+    {
+        "nom": "Cerises",
+        "temps": 7,
+        "prix": 30,
+        "quantite": 5
+    },
+    {
+        "nom": "Oranges",
+        "temps": 7,
+        "prix": 20,
+        "quantite": 5
+    },
+    {
+        "nom": "Fraises",
+        "temps": 7,
+        "prix": 20,
+        "quantite": 5
+    },
+    {
+        "nom": "Ble",
+        "temps": 7,
+        "prix": 20,
+        "quantite": 5
+    }
+]
