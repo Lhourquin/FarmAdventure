@@ -1,20 +1,11 @@
-const inquirer = require('inquirer');
-const readline = require('readline').createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
+import inquirer from 'inquirer';
+import readline from 'readline';
+import ressources from './ressources.json' assert { type: 'json'};
+import player from './player.json' assert { type: 'json'};
+import cultures from './cultures.json' assert { type: 'json'};
+import annimals from './annimals.json' assert { type: 'json'};
+import machines from './machines.json' assert { type: 'json'};
 
-const ressources = require('./ressources.json');
-
-const cultures = require('./cultures.json');
-
-const animaux = require('./annimals.json');
-
-const machines = require('./machines.json');
-
-const niveaux = require('./levels.json');
-
-const joueur = require('./player.json');
 
 const questions = [
     {

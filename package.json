@@ -1,5 +1,12 @@
 {
+  "name": "farm-adventure",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "farmAdventure.mjs",
+  "scripts": {
+    "start": "node farmAdventure.mjs"
+  },
   "dependencies": {
-    "inquirer": "^8.2.6"
+    "inquirer": "^9.2.23"
   }
 }
