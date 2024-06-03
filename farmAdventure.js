@@ -1,3 +1,4 @@
+const inquirer = require('inquirer');
 const readline = require('readline').createInterface({
     input: process.stdin,
     output: process.stdout
@@ -15,14 +16,31 @@ const niveaux = require('./levels.json');
 
 const joueur = require('./player.json');
 
+const questions = [
+    {
+        type: 'list',
+        name: 'option',
+        message: "Que souhaitez vous faire ?",
+        choices : [
+            "Consulter mon profil",
+            "Consulter les stocks",
+            "Planter",
+            "Récolter",
+            "Vendre",
+        ]
+    },
+];
+
 // ** Commencer à jouer **
-function jouer() {
-    readline.question(`Que souhaitez vous faire (AfficherProfil, AfficherStock, Planter, Récolter, Vendre) ? : `, (action) => {
-        switch (action) {
-            case "AfficherProfil":
+function play(){
+    inquirer.prompt(questions)
+    .then(answers => {
+        console.log(answers.option)
+        switch (answers.option) {
+            case "Consulter mon profil":
                 afficherProfil();
                 break;
-            case "AfficherStock":
+            case "Consulter les stocks":
                 afficherStock();
                 break;
             case "Planter":
@@ -34,12 +52,9 @@ function jouer() {
             case "Vendre":
                 vendre();
                 break;
-            default:
-                console.log('Action invalide');
-                jouer();
-            
         }
     })
+    .catch(error => console.log(error));
 }
 
 // ** Afficher les ressources débloqués **
@@ -98,7 +113,7 @@ function afficherProfil() {
     console.log(`Vous êtes actuellement au niveau ${joueur.niveau}.`)
     console.log(`Vous avez ${joueur.xp} xp.`)
 
-    jouer()
+    play()
 }
 
 // ** Afficher les stocks **
@@ -123,7 +138,7 @@ function afficherStock() {
         console.log("Il n'y a aucune plantation en cours!")
     }
 
-    jouer()
+    play()
 }
 
 // ** Plantations **
@@ -138,7 +153,7 @@ function plantationsEnCours(plante, cultures_item) {
         } else {
             clearInterval(intervalId);
             console.log(`Les ${plante} sont prêtes à être récoltés !`);
-            jouer();
+            play();
         }
     }, 1000);
 }
@@ -159,7 +174,7 @@ function planter() {
             ressourcesEnCours.push(culture_squelette);
             plantationsEnCours(plante, cultures_item)
             console.log(`La plantation des ${plante} s'est fait avec succès !`);
-            jouer()
+            play()
         } else {
             console.log("La plante saisi n'est pas disponible !")
             console.log(cultures_item)
@@ -185,7 +200,7 @@ function recolter() {
         } else {
             console.log("La plantation saisi n'existe pas !")
         }
-        jouer()
+        play()
     })
 }
 
@@ -229,5 +244,7 @@ function vendre() {
     poserQuestionSurPlante();
 }
 
+
+
 // ** Lancer le jeu **
-jouer()
+play()
