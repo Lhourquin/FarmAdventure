@@ -1,11 +1,17 @@
 import inquirer from 'inquirer';
-import readline from 'readline';
+import readline from 'node:readline';
+import fs from 'node:fs';
 import ressources from './ressources.json' assert { type: 'json'};
-import player from './player.json' assert { type: 'json'};
+import joueur from './player.json' assert { type: 'json'};
 import cultures from './cultures.json' assert { type: 'json'};
 import annimals from './annimals.json' assert { type: 'json'};
 import machines from './machines.json' assert { type: 'json'};
+import niveaux from './levels.json' assert { type:'json'};
 
+const rl = readline.createInterface({
+    input:process.stdin,
+    outpout:process.stdout
+});
 
 const questions = [
     {
@@ -24,28 +30,54 @@ const questions = [
 
 // ** Commencer à jouer **
 function play(){
-    inquirer.prompt(questions)
-    .then(answers => {
-        console.log(answers.option)
-        switch (answers.option) {
-            case "Consulter mon profil":
-                afficherProfil();
-                break;
-            case "Consulter les stocks":
-                afficherStock();
-                break;
-            case "Planter":
-                planter();
-                break;
-            case "Récolter":
-                recolter();
-                break;
-            case "Vendre":
-                vendre();
-                break;
-        }
-    })
-    .catch(error => console.log(error));
+    if(joueur.isFirstTimeUser){
+        inquirer.prompt([
+            {
+                type:'input',
+                name:'name',
+                message:"Bienvenue dans farmAdventure ! Pour commencer à jouer, créer ton pseudo ( Obligatoire !!) : "
+            }
+        ])
+        .then( (answers) =>{
+            if(!answers.name){
+                console.log("Tu peut pas jouer si tu créer pas de pseudo.");
+                return;
+            }
+            joueur.userName = answers.name;
+            joueur.isFirstTimeUser = false;
+            fs.writeFile('./player.json', JSON.stringify(joueur), err => {
+                if(err){
+                    console.error(err);
+                    return;
+                }
+            })
+            console.log(`Merci ${joueur.userName} !`)
+            play();
+        })
+    }else{
+        inquirer.prompt(questions)
+        .then(answers => {
+            console.log(answers.option)
+            switch (answers.option) {
+                case "Consulter mon profil":
+                    afficherProfil();
+                    break;
+                case "Consulter les stocks":
+                    afficherStock();
+                    break;
+                case "Planter":
+                    planter();
+                    break;
+                case "Récolter":
+                    recolter();
+                    break;
+                case "Vendre":
+                    vendre();
+                    break;
+            }
+        })
+        .catch(error => console.log(error));
+    }
 }
 
 // ** Afficher les ressources débloqués **
@@ -100,6 +132,7 @@ function debloqueNiveau() {
 
 // ** Afficher profil **
 function afficherProfil() {
+    console.log(joueur.userName)
     console.log("Voici votre profil : ")
     console.log(`Vous êtes actuellement au niveau ${joueur.niveau}.`)
     console.log(`Vous avez ${joueur.xp} xp.`)
@@ -150,7 +183,7 @@ function plantationsEnCours(plante, cultures_item) {
 }
 
 function planter() {
-    readline.question(`Que souhaitez-vous planter (${AfficherRessources("debloque")}) ? : `, (plante) => {
+    rl.question(`Que souhaitez-vous planter (${AfficherRessources("debloque")}) ? : `, (plante) => {
         let ressourcesEnCours = joueur.ressourcesEnCours;
         let cultures_item = cultures.find(item => item.nom === plante);
         let joueur_cultures_item = joueur.cultures.find(item => item.nom === plante);
@@ -176,7 +209,7 @@ function planter() {
 
 // ** Récoltes **
 function recolter() {
-    readline.question(`Que souhaitez vous récolter (${AfficherRessources("debloque")}) ? : `, (plante) => {
+    rl.question(`Que souhaitez vous récolter (${AfficherRessources("debloque")}) ? : `, (plante) => {
         let ressourcesEnCours_index = joueur.ressourcesEnCours.findIndex(asset => asset.nom === plante);
         let ressourcesEnCours_item = joueur.ressourcesEnCours.find(asset => asset.nom === plante);
         let joueur_cultures_item = joueur.cultures.find(item => item.nom === plante);
@@ -198,7 +231,7 @@ function recolter() {
 // ** Ventes **
 function vendre() {
     function poserQuestionSurPlante() {
-        readline.question(`Que souhaitez-vous vendre ${AfficherRessources("dispo")} ? : `, (plante) => {
+        rl.question(`Que souhaitez-vous vendre ${AfficherRessources("dispo")} ? : `, (plante) => {
             let joueur_cultures_item = joueur.cultures.find(item => item.nom === plante);
             let plantes = cultures.find(crop => crop.nom === plante);
 
@@ -215,7 +248,7 @@ function vendre() {
     }
 
     function poserQuestionSurQuantite(plante, joueur_cultures_item, plantes) {
-        readline.question(`Combien souhaitez-vous vendre de ${plante} ? (Une ${plante} coûte ${plantes.prix} pièces) : `, (quant) => {
+        rl.question(`Combien souhaitez-vous vendre de ${plante} ? (Une ${plante} coûte ${plantes.prix} pièces) : `, (quant) => {
             quant = parseInt(quant);
             if (quant <= joueur_cultures_item.quantite && joueur_cultures_item.quantite > 0) {
                 joueur_cultures_item.quantite -= quant;
