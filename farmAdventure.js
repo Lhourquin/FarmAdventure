@@ -1,3 +1,4 @@
+"use strict";
 import inquirer from 'inquirer';
 import readline from 'node:readline';
 import fs from 'node:fs';
@@ -138,22 +139,28 @@ function afficherProfil() {
 
 // ** Afficher les stocks **
 function afficherStock() {
-    let joueur_items = [...joueur.cultures, ...joueur.animaux, ...joueur.machines]
+    const joueur_items = [...joueur.cultures, ...joueur.animaux, ...joueur.machines]
 
-    console.log("Voici vos ressources : ")
-    joueur_items.forEach(item => {
-        if (item.quantite > 0) {
-            console.log(`${item.quantite} ${item.nom}`)
-        }
-    })
-
-    console.log("Voici vos plantations : ")
-    let assetEnCours = joueur.ressourcesEnCours.filter(item => item.temps > 0)
-
+    const ressources = joueur_items.filter(item => item.quantite > 0);
+    console.group("===== Voici vos ressources =====");
+    console.table(ressources.map(item => {
+           return {
+            "Quantités" : item.quantite,
+            "Nom" : item.nom,
+            "Débloqués" : "✅"
+           }
+    }));
+    console.groupEnd();
+    const assetEnCours = joueur.ressourcesEnCours.filter(item => item.temps > 0);
     if (assetEnCours.length > 0) {
-        assetEnCours.forEach(item => {
-            console.log(`Plantation en cours: ${item.nom}, Temps restant: ${item.temps}`)
-        })
+        console.group("===== Voici vos plantations =====")
+        console.table(assetEnCours.map(item => {
+            return {
+                "Plantation en cours" : item.nom,
+                "Temps restant" : item.temps
+            }
+        }))
+        console.groupEnd();
     } else {
         console.log("Il n'y a aucune plantation en cours!")
     }
