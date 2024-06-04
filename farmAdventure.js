@@ -132,11 +132,7 @@ function debloqueNiveau() {
 
 // ** Afficher profil **
 function afficherProfil() {
-    console.log(joueur.userName)
-    console.log("Voici votre profil : ")
-    console.log(`Vous êtes actuellement au niveau ${joueur.niveau}.`)
-    console.log(`Vous avez ${joueur.xp} xp.`)
-
+    console.table([{"Pseudo": joueur.userName, "XP": joueur.xp + "xp", "Niveau": joueur.niveau}] )
     play()
 }
 
