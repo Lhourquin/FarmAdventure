@@ -14,71 +14,94 @@ const rl = readline.createInterface({
     outpout:process.stdout
 });
 
-const questions = [
-    {
-        type: 'list',
-        name: 'option',
-        message: "Que souhaitez vous faire ?",
-        choices : [
-            "Consulter mon profil",
-            "Consulter les stocks",
-            "Planter",
-            "Récolter",
-            "Vendre",
-        ]
-    },
-];
-
-// ** Commencer à jouer **
-function play(){
-    if(joueur.isFirstTimeUser){
-        inquirer.prompt([
-            {
-                type:'input',
-                name:'name',
-                message:"Bienvenue dans farmAdventure ! Pour commencer à jouer, créer ton pseudo ( Obligatoire !!) : "
-            }
-        ])
-        .then( (answers) =>{
-            if(!answers.name){
-                console.log("Tu peut pas jouer si tu créer pas de pseudo.");
+function createUser(){
+    inquirer.prompt([
+        {
+            type:'input',
+            name:'name',
+            message:"Bienvenue dans farmAdventure ! Pour commencer à jouer, créer ton pseudo ( Obligatoire !!) : "
+        }
+    ])
+    .then( (answers) =>{
+        if(!answers.name){
+            console.log("Tu peut pas jouer si tu créer pas de pseudo.");
+            return;
+        }
+        joueur.userName = answers.name;
+        joueur.isFirstTimeUser = false;
+        fs.writeFile('./player.json', JSON.stringify(joueur), err => {
+            if(err){
+                console.error(err);
                 return;
             }
-            joueur.userName = answers.name;
-            joueur.isFirstTimeUser = false;
-            fs.writeFile('./player.json', JSON.stringify(joueur), err => {
-                if(err){
-                    console.error(err);
-                    return;
-                }
-            })
-            console.log(`Merci ${joueur.userName} !`)
-            play();
         })
+        console.log(`Merci ${joueur.userName} !`)
+        init();
+    })
+}
+
+function init(){
+    if(joueur.isFirstTimeUser){
+       createUser();
     }else{
-        inquirer.prompt(questions)
-        .then(answers => {
-            console.log(answers.option)
-            switch (answers.option) {
-                case "Consulter mon profil":
-                    afficherProfil();
-                    break;
-                case "Consulter les stocks":
-                    afficherStock();
-                    break;
-                case "Planter":
-                    planter();
-                    break;
-                case "Récolter":
-                    recolter();
-                    break;
-                case "Vendre":
-                    vendre();
-                    break;
-            }
-        })
-        .catch(error => console.log(error));
+        play();
     }
+}
+
+
+// ** Commencer à jouer **
+async function play(){
+
+    
+    let asking = true;
+
+    while(asking){
+        const action = await actionSelected();
+        switch (action) {
+            case "Consulter mon profil":
+                afficherProfil();
+                break;
+            case "Consulter les stocks":
+                afficherStock();
+                break;
+            case "Planter":
+                planter();
+                break;
+            case "Récolter":
+                recolter();
+                break;
+            case "Vendre":
+                vendre();
+                break;
+            case "Quitter":
+                asking = false;
+                break;
+        }
+        
+    }
+
+
+}
+
+async function actionSelected(){
+    const questions = [
+        {
+            type: 'list',
+            name: 'action',
+            message: "Que souhaitez vous faire ?",
+            choices : [
+                "Consulter mon profil",
+                "Consulter les stocks",
+                "Planter",
+                "Récolter",
+                "Vendre",
+                "Quitter"
+            ]
+        },
+    ];
+    const answers = await inquirer.prompt(questions);
+    console.log(answers)
+    return answers.action;
 }
 
 // ** Afficher les ressources débloqués **
@@ -134,7 +157,6 @@ function debloqueNiveau() {
 // ** Afficher profil **
 function afficherProfil() {
     console.table([{"Pseudo": joueur.userName, "XP": joueur.xp + "xp", "Niveau": joueur.niveau}] )
-    play()
 }
 
 // ** Afficher les stocks **
@@ -165,7 +187,6 @@ function afficherStock() {
         console.log("Il n'y a aucune plantation en cours!")
     }
 
-    play()
 }
 
 // ** Plantations **
@@ -180,16 +201,29 @@ function plantationsEnCours(plante, cultures_item) {
         } else {
             clearInterval(intervalId);
             console.log(`Les ${plante} sont prêtes à être récoltés !`);
-            play();
+            return;
         }
     }, 1000);
 }
 
 function planter() {
-    rl.question(`Que souhaitez-vous planter (${AfficherRessources("debloque")}) ? : `, (plante) => {
+    const cultures_debloque = joueur.cultures.filter(item => item.debloque).map(item => item.nom)
+    const questions = [
+        
+        {
+            type: 'list',
+            name: 'name',
+            message: "Que souhaitez vous planter ?",
+            choices : cultures_debloque
+        },
+        
+    ]
+    inquirer.prompt(questions)
+    .then
+    ((plante) => {
         let ressourcesEnCours = joueur.ressourcesEnCours;
-        let cultures_item = cultures.find(item => item.nom === plante);
-        let joueur_cultures_item = joueur.cultures.find(item => item.nom === plante);
+        let cultures_item = cultures.find(item => item.nom === plante.name);
+        let joueur_cultures_item = joueur.cultures.find(item => item.nom === plante.name);
         
         let culture_squelette = {
             nom: cultures_item.nom,
@@ -201,11 +235,11 @@ function planter() {
             ressourcesEnCours.push(culture_squelette);
             plantationsEnCours(plante, cultures_item)
             console.log(`La plantation des ${plante} s'est fait avec succès !`);
-            play()
+            return;
         } else {
             console.log("La plante saisi n'est pas disponible !")
             console.log(cultures_item)
-            planter()
+            return;
         }
     });
 }
@@ -227,7 +261,6 @@ function recolter() {
         } else {
             console.log("La plantation saisi n'existe pas !")
         }
-        play()
     })
 }
 
@@ -274,4 +307,4 @@ function vendre() {
 
 
 // ** Lancer le jeu **
-play()
+init();
