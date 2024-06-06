@@ -1,6 +1,6 @@
 {
-  "isFirstTimeUser": true,
-  "userName": null,
+  "isFirstTimeUser": false,
+  "userName": "Lucas",
   "niveau": 0,
   "xp": 0,
   "terres": 1,

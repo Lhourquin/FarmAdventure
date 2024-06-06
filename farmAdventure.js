@@ -2,12 +2,12 @@
 import inquirer from 'inquirer';
 import readline from 'node:readline';
 import fs from 'node:fs';
-import ressources from './ressources.json' assert { type: 'json'};
-import joueur from './player.json' assert { type: 'json'};
-import cultures from './cultures.json' assert { type: 'json'};
-import annimals from './annimals.json' assert { type: 'json'};
-import machines from './machines.json' assert { type: 'json'};
-import niveaux from './levels.json' assert { type:'json'};
+import ressources from './assets/ressources.json' assert { type: 'json'};
+import joueur from './assets/player.json' assert { type: 'json'};
+import cultures from './assets/cultures.json' assert { type: 'json'};
+import annimals from './assets/annimals.json' assert { type: 'json'};
+import machines from './assets/machines.json' assert { type: 'json'};
+import niveaux from './assets/levels.json' assert { type:'json'};
 
 const rl = readline.createInterface({
     input:process.stdin,
