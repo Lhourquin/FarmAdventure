@@ -29,14 +29,18 @@ function createUser(){
         }
         joueur.userName = answers.name;
         joueur.isFirstTimeUser = false;
-        fs.writeFile('./player.json', JSON.stringify(joueur), err => {
-            if(err){
-                console.error(err);
-                return;
-            }
-        })
+        updatePlayer();
         console.log(`Merci ${joueur.userName} !`)
         init();
+        })
+}
+        
+function updatePlayer(){
+    fs.writeFile('./assets/player.json', JSON.stringify(joueur), err => {
+        if(err){
+            console.error(err);
+            return;
+        }
     })
 }
 
