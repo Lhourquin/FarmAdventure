@@ -63,10 +63,7 @@ async function play(){
         const action = await actionSelected();
         switch (action) {
             case "Consulter mon profil":
-                afficherProfil();
-                break;
-            case "Consulter les stocks":
-                afficherStock();
+                displayProfil();
                 break;
             case "Planter":
                 planter();
@@ -95,7 +92,6 @@ async function actionSelected(){
             message: "Que souhaitez vous faire ?",
             choices : [
                 "Consulter mon profil",
-                "Consulter les stocks",
                 "Planter",
                 "Récolter",
                 "Vendre",
@@ -159,27 +155,25 @@ function debloqueNiveau() {
 }
 
 // ** Afficher profil **
-function afficherProfil() {
+function displayProfil() {
+    //display profil of user
     console.table([{"Pseudo": joueur.userName, "XP": joueur.xp + "xp", "Niveau": joueur.niveau}] )
-}
-
-// ** Afficher les stocks **
-function afficherStock() {
+    //display stock of user
     const joueur_items = [...joueur.cultures, ...joueur.animaux, ...joueur.machines]
 
     const ressources = joueur_items.filter(item => item.quantite > 0);
     console.group("===== Voici vos ressources =====");
     console.table(ressources.map(item => {
-           return {
+        return {
             "Quantités" : item.quantite,
             "Nom" : item.nom,
             "Débloqués" : "✅"
-           }
+        }
     }));
     console.groupEnd();
     const assetEnCours = joueur.ressourcesEnCours.filter(item => item.temps > 0);
     if (assetEnCours.length > 0) {
-        console.group("===== Voici vos plantations =====")
+        console.group("===== Voici vos ressources en cours de productions =====")
         console.table(assetEnCours.map(item => {
             return {
                 "Plantation en cours" : item.nom,
@@ -190,7 +184,6 @@ function afficherStock() {
     } else {
         console.log("Il n'y a aucune plantation en cours!")
     }
-
 }
 
 // ** Plantations **
